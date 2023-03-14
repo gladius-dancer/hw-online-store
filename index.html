@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Title</title>
+        <link rel="stylesheet" href="public/css/font-awesome.min.css">
+        <link rel="stylesheet" href="public/css/themify-icons.css">
+        <link rel="stylesheet" href="public/css/owl.carousel.css">
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <!-- Dependencies -->
+        <% if (webpackConfig.mode === 'production') { %>
+        <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+        <% } else { %>
+        <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+        <% } %>
+
+        <script src="public/js/jquery/jquery-2.2.4.min.js"></script>
+        <script src="public/js/active.js"></script>
+
+    </body>
+</html>

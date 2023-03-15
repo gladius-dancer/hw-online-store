@@ -28,8 +28,12 @@ function Header() {
                 <div className="header-cart-menu d-flex align-items-center ml-auto">
                   {/* Cart Area */}
                   <div className="cart">
-                    <Link to={"/cart"} id="header-cart-btn" target="_blank"><span className="cart_quantity">{countCartProducts}</span> <i
-                      className="ti-bag"></i> Your Bag $20</Link>
+                    <Link to={"/cart"} id="header-cart-btn">
+                      <span className="cart_quantity">
+                        {countCartProducts}
+                      </span>
+                      <i className="ti-bag"></i> Your Bag $20
+                    </Link>
                     {/* Cart List Area Start */}
                     <ul className="cart-list">
                       <li>

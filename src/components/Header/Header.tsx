@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 function Header() {
   const dispatch = useDispatch();
 
+  const countCartProducts = useAppSelector(state=> state.cart).length
 
   return (
     <header className="header_area">
@@ -21,14 +22,14 @@ function Header() {
               <div className="top_single_area d-flex align-items-center justify-content-between">
                 {/* Logo Area */}
                 <div className="top_logo">
-                  <a href="#"><img src={images.logo} alt=""/></a>
+                  <Link to="/"><img src={images.logo} alt=""/></Link>
                 </div>
                 {/* Cart & Menu Area */}
                 <div className="header-cart-menu d-flex align-items-center ml-auto">
                   {/* Cart Area */}
                   <div className="cart">
-                    <a href="#" id="header-cart-btn" target="_blank"><span className="cart_quantity">2</span> <i
-                      className="ti-bag"></i> Your Bag $20</a>
+                    <Link to="/cart" id="header-cart-btn" target="_blank"><span className="cart_quantity">{countCartProducts}</span> <i
+                      className="ti-bag"></i> Your Bag $20</Link>
                     {/* Cart List Area Start */}
                     <ul className="cart-list">
                       <li>

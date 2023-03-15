@@ -3,11 +3,25 @@ import * as React from "react";
 import { useEffect } from "react";
 import { fetchProducts } from "../../store/actions";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { addProductAction, getProductsAction, updateProductsAction } from "../../store/cartReduser";
 
 
 function Products() {
   const dispatch = useAppDispatch();
   const products = useAppSelector(state => state.products.products);
+  const cart = useAppSelector(state => state.cart);
+
+  const addToCart = (id: number)=>{
+    const product = products.filter((item: any)=>item.id === id)[0];
+    const founded = cart.find((item:any)=>item.id === id);
+      Boolean(founded)?
+      dispatch(updateProductsAction(cart.map((item: any)=>item.id === id ? {...item, count: item.count+1} : item))):
+      dispatch(addProductAction({...product, count:1}))
+  }
+
+  useEffect(()=>{
+    localStorage.setItem("cart", JSON.stringify(cart))
+  }, [cart])
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -53,7 +67,7 @@ function Products() {
                 <h4 className="product-price">${item.price}</h4>
                 <p>{item.title}</p>
                 {/* Add to Cart */}
-                <a href="#" className="add-to-cart-btn">ADD TO CART</a>
+                <p onClick={()=>addToCart(item.id)} className="add-to-cart-btn">ADD TO CART</p>
               </div>
             </div>
           ))}

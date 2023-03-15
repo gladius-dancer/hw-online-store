@@ -1157,6 +1157,7 @@ img {
   font-weight: 700;
   color: #ff084e;
   display: block;
+  cursor: pointer;
 }
 
 .product-description .add-to-cart-btn:hover {
@@ -1905,7 +1906,7 @@ img {
   font-size: 14px;
 }
 
-.cart_area .update-checkout a,
+.cart_area .update-checkout p,
 .cart_area .back-to-shop a {
   background-color: transparent;
   border-radius: 0;
@@ -1919,6 +1920,7 @@ img {
   font-weight: 700;
   border: 2px solid #3a3a3a;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .cart_area .update-checkout a:first-child {

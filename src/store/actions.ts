@@ -25,3 +25,9 @@ const getCategories = async () => {
   const response = await axios.get("https://fakestoreapi.com/products/categories");
   return response.data;
 };
+
+const loginUser = async (login: string, password: string) => {
+  const response = await axios.post("https://fakestoreapi.com/auth/login",
+    {login: login, password: password});
+  return response.data;
+};

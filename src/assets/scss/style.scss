@@ -63,7 +63,7 @@ a:hover,
 a:focus {
   -webkit-transition: all 500ms ease 0s;
   transition: all 500ms ease 0s;
-  text-decoration: none;
+  text-decoration: none !important;
   outline: none;
   color: #000000;
   font-family: 'Open Sans', sans-serif;

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../store/store";
 import { changeNavAction } from "../../store/changeNavReduser";
 import images from "../../assets/images";
+import { Link } from "react-router-dom";
 
 function Header() {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ function Header() {
                   <div className="header-right-side-menu ml-15">
                     <a href="#" id="sideMenuBtn" onClick={()=>dispatch(changeNavAction())}><i className="ti-menu" aria-hidden="true"></i></a>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -72,12 +74,8 @@ function Header() {
           <div className="row h-100">
             <div className="col-12 d-md-flex justify-content-between">
               {/* Header Social Area */}
-              <div className="header-social-area">
-                <a href="#"><span className="karl-level">Share</span> <i className="fa fa-pinterest"
-                                                                         aria-hidden="true"></i></a>
-                <a href="#"><i className="fa fa-facebook" aria-hidden="true"></i></a>
-                <a href="#"><i className="fa fa-twitter" aria-hidden="true"></i></a>
-                <a href="#"><i className="fa fa-linkedin" aria-hidden="true"></i></a>
+              <div className="help-line">
+                <a href="tel:+346573556778"><i className="ti-headphone-alt"></i> +34 657 3556 778</a>
               </div>
               {/* Menu Area */}
               <div className="main-menu-area">
@@ -111,7 +109,7 @@ function Header() {
               </div>
               {/* Help Line */}
               <div className="help-line">
-                <a href="tel:+346573556778"><i className="ti-headphone-alt"></i> +34 657 3556 778</a>
+                <Link to="/login"><i className="ti-user"></i> Login</Link>
               </div>
             </div>
           </div>

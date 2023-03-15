@@ -1,5 +1,3 @@
-import { Product } from "../types/Product";
-
 type State = {
   categories: string[]
 }

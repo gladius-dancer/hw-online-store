@@ -78,7 +78,7 @@ function Cart() {
 
                 <div className="cart-footer d-flex mt-30">
                   <div className="back-to-shop w-50">
-                    <Link to="/">Continue shooping</Link>
+                    <Link to={"/"}>Continue shooping</Link>
                   </div>
                   <div className="update-checkout w-50 text-right">
                     <p onClick={()=>clear()}>clear cart</p>

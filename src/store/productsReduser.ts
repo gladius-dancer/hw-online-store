@@ -1,7 +1,7 @@
-import {Product} from "../types/Product";
+import {ProductType} from "../types/ProductType";
 
 type State = {
-  products: Product[]
+  products: ProductType[]
 }
 
 const products: State = {

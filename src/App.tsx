@@ -4,6 +4,9 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Main from "./pages/Main/Main";
 import Login from "./pages/Login/Login";
 import Cart from "./pages/Cart/Cart";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 const App = () => (
     <BrowserRouter>

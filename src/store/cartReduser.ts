@@ -1,4 +1,4 @@
-let products: any[] = localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart")):[];
+let products: any[] = localStorage.getItem("cart")?JSON.parse(localStorage.getItem("cart") || "") :[];
 
 const ADD = "ADD";
 const GET = "GET";

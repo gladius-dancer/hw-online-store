@@ -3,7 +3,7 @@
 
     // :: 1.0 Fullscreen Active Code
     // :: 2.0 Welcome Slider Active Code
-    // :: 3.0 Related Product Active Code
+    // :: 3.0 Related ProductType Active Code
     // :: 4.0 Testimonials Slider Active Code
     // :: 5.0 Gallery Menu Style Active Code
     // :: 6.0 Masonary Gallery Active Code
@@ -45,7 +45,7 @@
         });
     }
 
-    // :: 3.0 Related Product Active Code
+    // :: 3.0 Related ProductType Active Code
     if ($.fn.owlCarousel) {
         $('.you_make_like_slider').owlCarousel({
             items: 3,
@@ -191,7 +191,7 @@
             values: [value_min, value_max],
             slide: function (event, ui) {
                 var result = label_result + " " + unit + ui.values[0] + ' - ' + unit + ui.values[1];
-                console.log(t);
+
                 t.closest('.slider-range').find('.range-price').html(result);
             }
         });

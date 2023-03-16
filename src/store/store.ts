@@ -6,12 +6,16 @@ import { categoriesReduser } from "./categoriesReduser";
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { changeNavReduser } from "./changeNavReduser";
 import { cartReduser } from "./cartReduser";
+import { priceReduser } from "./priceReduser";
+import { shippingReduser } from "./shippingReduser";
 
 const rootReduser = combineReducers({
   products: productsReduser,
   categories: categoriesReduser,
   changeNAv: changeNavReduser,
-  cart: cartReduser
+  cart: cartReduser,
+  price: priceReduser,
+  shipping: shippingReduser
 })
 
 const store = createStore(rootReduser, composeWithDevTools(applyMiddleware(thunk)));

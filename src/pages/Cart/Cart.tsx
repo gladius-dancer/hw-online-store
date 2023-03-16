@@ -5,31 +5,58 @@ import Categories from "../../components/Categories/Categories";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { addProductAction, updateProductsAction } from "../../store/cartReduser";
 import { Link } from "react-router-dom";
+import { setPriceAction } from "../../store/priceReduser";
+import { setShippingAction } from "../../store/shippingReduser";
 
 function Cart() {
 
   const dispatch = useAppDispatch();
   const nav = useAppSelector(state => state.changeNAv);
   const cart = useAppSelector(state => state.cart);
+  const price: any = useAppSelector(state=> state.price);
+  const shipping: any = useAppSelector(state=>state.shipping);
+
   const incCount = (id: number) => {
-    dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count + 1 } : item)));
+    dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count + 1} : item)));
+    priceCalc()
   };
+
   const decCount = (id: number) => {
     if(cart.find((item:any)=>item.id === id).count > 1){
-      dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count - 1 } : item)));
+      dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count - 1} : item)));
     }
     else{
       dispatch(updateProductsAction(cart.filter((item: any) => item.id !== id)));
     }
+    priceCalc()
   };
+
+  const priceCalc = ()=>{
+    const totalPrice = cart.reduce((summ: number, current: any)=>{
+      return summ + (current.price * current.count)
+    }, 0)
+
+    dispatch(setPriceAction({totalPrice: totalPrice, shipping: 0}));
+    return totalPrice
+  }
+
+  const changeShipping = (value: string)=>{
+    dispatch(setShippingAction(value))
+    return value;
+  }
+
   const clear = ()=>{
     dispatch(updateProductsAction([]));
   }
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    localStorage.setItem("totalPrice", JSON.stringify(priceCalc()));
+    localStorage.setItem("shipping", JSON.stringify(shipping));
 
+  }, [cart, shipping]);
+
+  // @ts-ignore
   return (
     <>
       <Categories />
@@ -43,7 +70,7 @@ function Cart() {
                   <table className="table table-responsive">
                     <thead>
                     <tr>
-                      <th>Product</th>
+                      <th>ProductType</th>
                       <th>Price</th>
                       <th>Quantity</th>
                       <th>Total</th>
@@ -53,7 +80,7 @@ function Cart() {
                     {cart.map((item: any) => (
                       <tr key={item.id}>
                         <td className="cart_product_img d-flex align-items-center">
-                          <a href="#"><img src={item.image} alt="Product" /></a>
+                          <a href="#"><img src={item.image} alt="ProductType" /></a>
                           <h6>{item.title}</h6>
                         </td>
                         <td className="price"><span>${item.price}</span></td>
@@ -69,7 +96,7 @@ function Cart() {
                       </span>
                           </div>
                         </td>
-                        <td className="total_price"><span>${item.price}</span></td>
+                        <td className="total_price"><span>$ {(item.count * item.price).toFixed(2)}</span></td>
                       </tr>
                     ))}
                     </tbody>
@@ -108,19 +135,19 @@ function Cart() {
                   </div>
 
                   <div className="custom-control custom-radio mb-30">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" />
+                    <input type="radio" checked={shipping.current === "extra"} onClick={()=>changeShipping("extra")} id="customRadio1" name="customRadio" className="custom-control-input" />
                     <label className="custom-control-label d-flex align-items-center justify-content-between"
-                           htmlFor="customRadio1"><span>Next day delivery</span><span>$4.99</span></label>
+                           htmlFor="customRadio1"><span>Next day delivery</span><span>$ {shipping.extra}</span></label>
                   </div>
 
                   <div className="custom-control custom-radio mb-30">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" />
+                    <input type="radio" checked={shipping.current === "standart" } onClick={()=>changeShipping("standart")} id="customRadio2" name="customRadio" className="custom-control-input" />
                     <label className="custom-control-label d-flex align-items-center justify-content-between"
-                           htmlFor="customRadio2"><span>Standard delivery</span><span>$1.99</span></label>
+                           htmlFor="customRadio2"><span>Standard delivery</span><span>$ {shipping.standart}</span></label>
                   </div>
 
                   <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio3" name="customRadio" className="custom-control-input" />
+                    <input type="radio" checked={shipping.current === "personal" } onClick={()=>changeShipping("personal")} id="customRadio3" name="customRadio" className="custom-control-input" />
                     <label className="custom-control-label d-flex align-items-center justify-content-between"
                            htmlFor="customRadio3"><span>Personal Pickup</span><span>Free</span></label>
                   </div>
@@ -134,9 +161,9 @@ function Cart() {
                   </div>
 
                   <ul className="cart-total-chart">
-                    <li><span>Subtotal</span> <span>$59.90</span></li>
-                    <li><span>Shipping</span> <span>Free</span></li>
-                    <li><span><strong>Total</strong></span> <span><strong>$59.90</strong></span></li>
+                    <li><span>Subtotal</span> <span>$ {parseFloat(price.totalPrice).toFixed(2)}</span></li>
+                    <li><span>Shipping</span> <span>{shipping[shipping.current] > 0 ? shipping[shipping.current]: "Free"}</span></li>
+                    <li><span><strong>Total</strong></span> <span><strong>$ {parseFloat(price.totalPrice + shipping[shipping.current]).toFixed(2)}</strong></span></li>
                   </ul>
                   <a href="checkout.html" className="btn karl-checkout-btn">Proceed to checkout</a>
                 </div>

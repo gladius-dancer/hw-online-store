@@ -1,15 +1,13 @@
 import * as React from "react";
-import {useState}  from "react";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { changeNavAction } from "../../store/changeNavReduser";
 import images from "../../assets/images";
 import { Link } from "react-router-dom";
 
 function Header() {
-  const dispatch = useDispatch();
-
-  const countCartProducts = useAppSelector(state=> state.cart).length
+  const dispatch = useAppDispatch()
+  const price: any = useAppSelector(state=> state.price);
+  const countCartProducts: number = useAppSelector(state=> state.cart).length
 
   return (
     <header className="header_area">
@@ -32,7 +30,7 @@ function Header() {
                       <span className="cart_quantity">
                         {countCartProducts}
                       </span>
-                      <i className="ti-bag"></i> Your Bag $20
+                      <i className="ti-bag"></i> Your Bag $ {parseFloat(price.totalPrice).toFixed(2)}
                     </Link>
                     {/* Cart List Area Start */}
                     <ul className="cart-list">

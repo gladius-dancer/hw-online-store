@@ -3,7 +3,7 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Categories from "../../components/Categories/Categories";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { addProductAction, updateProductsAction } from "../../store/cartReduser";
+import { updateProductsAction } from "../../store/cartReduser";
 import { Link } from "react-router-dom";
 import { setPriceAction } from "../../store/priceReduser";
 import { setShippingAction } from "../../store/shippingReduser";
@@ -26,10 +26,14 @@ function Cart() {
       dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count - 1} : item)));
     }
     else{
-      dispatch(updateProductsAction(cart.filter((item: any) => item.id !== id)));
+      dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count} : item)));
     }
     priceCalc()
   };
+
+  const deleteProduct = (id: number)=>{
+    dispatch(updateProductsAction(cart.filter((item: any) => item.id !== id)));
+  }
 
   const priceCalc = ()=>{
     const totalPrice = cart.reduce((summ: number, current: any)=>{
@@ -72,8 +76,9 @@ function Cart() {
                     <tr>
                       <th>ProductType</th>
                       <th>Price</th>
-                      <th>Quantity</th>
                       <th>Total</th>
+                      <th>Quantity</th>
+                      <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,6 +89,7 @@ function Cart() {
                           <h6>{item.title}</h6>
                         </td>
                         <td className="price"><span>${item.price}</span></td>
+                        <td className="total_price"><span>$ {(item.count * item.price).toFixed(2)}</span></td>
                         <td className="qty">
                           <div className="quantity">
                       <span className="qty-minus" onClick={() => decCount(item.id)}>
@@ -96,7 +102,10 @@ function Cart() {
                       </span>
                           </div>
                         </td>
-                        <td className="total_price"><span>$ {(item.count * item.price).toFixed(2)}</span></td>
+
+                        <td>
+                          <button onClick={()=>deleteProduct(item.id)} className="btn btn-danger pt-0 pb-0 border-10">Delete</button>
+                        </td>
                       </tr>
                     ))}
                     </tbody>

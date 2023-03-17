@@ -14,7 +14,9 @@ function Products() {
   const products = useAppSelector(state => state.products.products);
   const cart = useAppSelector(state => state.cart);
   const [modal, setModal] = useState(false);
-  const [currentProduct, setSetCurrentProduct] = useState({});
+  const [currentProduct, setSetCurrentProduct] = useState<any>({});
+  console.log(currentProduct);
+
 
   const addToCart = (id: number) => {
     const product = products.filter((item: any) => item.id === id)[0];
@@ -25,6 +27,7 @@ function Products() {
         count: item.count + 1
       } : item))) :
       dispatch(addProductAction({ ...product, count: 1, totalPrice: product.price }));
+      setModal(false);
   };
 
   const priceCalc = () => {
@@ -123,7 +126,7 @@ function Products() {
                       </div>
                       <div className="col-12 col-lg-7">
                         <div className="quickview_pro_des">
-                          <h4 className="title">{currentProduct.title}</h4>
+                          <h5 className="title">{currentProduct.title}</h5>
                           <div className="top_seller_product_rating mb-15">
                             <i className="fa fa-star" aria-hidden="true"></i>
                             <i className="fa fa-star" aria-hidden="true"></i>
@@ -131,8 +134,8 @@ function Products() {
                             <i className="fa fa-star" aria-hidden="true"></i>
                             <i className="fa fa-star" aria-hidden="true"></i>
                           </div>
-                          <h5 className="price">$ {currentProduct.price} <span>$ {parseFloat(currentProduct.price * 130 / 100).toFixed(2)}</span></h5>
-                          <p>{currentProduct.description}</p>
+                          <h5 className="price">$ {currentProduct.price} <span>$ {parseFloat(String(currentProduct.price * 130 / 100)).toFixed(2)}</span></h5>
+                          <p>{(currentProduct.description) ? (currentProduct.description).split("").splice(0, 150).join("") + "..." : ""}</p>
                           <a href="#">View Full Product Details</a>
                         </div>
                         {/* Add to Cart Form */}

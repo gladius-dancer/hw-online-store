@@ -1,6 +1,5 @@
 import React from "react";
 import images from "../../assets/images";
-import { changeNavAction } from "../../store/changeNavReduser";
 import { InputText } from "../../components/FormComponents/InputText";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -33,7 +32,6 @@ function Login() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -43,11 +41,11 @@ function Login() {
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="column">
-                <div className="col-md-12 mb-3">
+                <div className="col-md-12 mb-3 pl-0 pr-0">
                   <label htmlFor="first_name">Login <span>*</span></label>
                   <InputText key="name" name="login" control={control} status={true}/>
                 </div>
-                <div className="col-md-12 mb-3">
+                <div className="col-md-12 mb-3 pl-0 pr-0">
                   <label htmlFor="last_name">Password <span>*</span></label>
                   <InputText key="password" name="password" control={control} status={true}/>
                 </div>

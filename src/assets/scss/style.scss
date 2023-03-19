@@ -515,16 +515,25 @@ img {
   z-index: 1;
 }
 
+.help-line{
+  position: relative;
+}
+
 .help-line a {
+  position: relative;
+  z-index: 2;
   width: auto;
-  height: 35px;
-  padding: 0 30px;
+  height: 40px;
+  padding: 0 20px;
   background-color: #ff084e;
   color: #fff;
   display: block;
   line-height: 35px;
   font-size: 14px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .help-line a:hover,
@@ -1071,7 +1080,7 @@ img {
 
 .product-img {
   position: relative;
-  height: 400px;
+  height: 270px;
   z-index: 1;
   overflow: hidden;
   display: flex;
@@ -1080,7 +1089,7 @@ img {
 }
 
 .product-img > img {
-  width: 60%;
+  width: 100%;
   height: auto;
   -webkit-transition-duration: 500ms;
   transition-duration: 500ms;

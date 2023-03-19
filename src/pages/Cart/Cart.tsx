@@ -85,7 +85,7 @@ function Cart() {
                     {cart.map((item: any) => (
                       <tr key={item.id}>
                         <td className="cart_product_img d-flex align-items-center">
-                          <a href="#"><img src={item.image} alt="ProductType" /></a>
+                          <a href="#"><img src={item.images[0]} alt="ProductType" /></a>
                           <h6>{item.title}</h6>
                         </td>
                         <td className="price"><span>${item.price}</span></td>

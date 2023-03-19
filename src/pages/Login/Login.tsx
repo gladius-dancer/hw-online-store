@@ -4,19 +4,21 @@ import { InputText } from "../../components/FormComponents/InputText";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "../../store/store";
+import { loginUser } from "../../store/actions";
 
 function Login() {
 
+  const dispatch = useAppDispatch()
+
   const schema = yup.object().shape({
-    login: yup.string().required(),
+    email: yup.string().required().email(),
     password: yup.string().required().min(4),
   });
 
-
   const methods = useForm({resolver: yupResolver(schema)});
   const {handleSubmit, control, setValue, formState: {errors}} = methods;
-  const onSubmit = (data: any) => console.log(data);
-
+  const onSubmit = (data: any) => dispatch(loginUser(data));
 
   return (
     <div>
@@ -42,8 +44,8 @@ function Login() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="column">
                 <div className="col-md-12 mb-3 pl-0 pr-0">
-                  <label htmlFor="first_name">Login <span>*</span></label>
-                  <InputText key="name" name="login" control={control} status={true}/>
+                  <label htmlFor="first_name">Email <span>*</span></label>
+                  <InputText key="name" name="email" control={control} status={true}/>
                 </div>
                 <div className="col-md-12 mb-3 pl-0 pr-0">
                   <label htmlFor="last_name">Password <span>*</span></label>

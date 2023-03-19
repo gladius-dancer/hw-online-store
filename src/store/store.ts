@@ -8,6 +8,7 @@ import { changeNavReduser } from "./changeNavReduser";
 import { cartReduser } from "./cartReduser";
 import { priceReduser } from "./priceReduser";
 import { shippingReduser } from "./shippingReduser";
+import { userInfoReduser } from "./userInfoReduser";
 
 const rootReduser = combineReducers({
   products: productsReduser,
@@ -15,7 +16,8 @@ const rootReduser = combineReducers({
   changeNAv: changeNavReduser,
   cart: cartReduser,
   price: priceReduser,
-  shipping: shippingReduser
+  shipping: shippingReduser,
+  currentUser: userInfoReduser
 })
 
 const store = createStore(rootReduser, composeWithDevTools(applyMiddleware(thunk)));

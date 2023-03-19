@@ -16,7 +16,6 @@ function Categories() {
   }, []);
 
     const categories = useAppSelector((state: any) => state.categories.categories);
-    // console.log(categories);
 
   return (
     <div className="catagories-side-menu">
@@ -30,9 +29,9 @@ function Categories() {
           <h6>Categories</h6>
           <ul id="menu-content" className={cn("menu-content collapse out", "menu")}>
             {/* Single Item */}
-            {categories?.map((item: string)=>(
-              <li key={item} data-toggle="collapse" data-target="#women" className="collapsed">
-                <a href="#">{item}</a>
+            {categories?.map((item: any)=>(
+              <li key={item.id} data-toggle="collapse" data-target="#women" className="collapsed">
+                <a href="#">{item.name}</a>
               </li>
             ))}
 

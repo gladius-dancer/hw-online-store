@@ -3,11 +3,23 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { changeNavAction } from "../../store/changeNavReduser";
 import images from "../../assets/images";
 import { Link } from "react-router-dom";
+import { useIsAuthorized } from "../../hooks/useIsAuthorized";
+import { getUserAction } from "../../store/userInfoReduser";
+import "./Header.scss";
+import { fetchUser } from "../../store/actions";
 
 function Header() {
-  const dispatch = useAppDispatch()
-  const price: any = useAppSelector(state=> state.price);
-  const countCartProducts: number = useAppSelector(state=> state.cart).length
+  const dispatch = useAppDispatch();
+  const price: any = useAppSelector(state => state.price);
+  const countCartProducts: number = useAppSelector(state => state.cart).length;
+  const currentUser = useAppSelector(state => state.currentUser).user;
+  const isAutorized = useIsAuthorized();
+
+  const logout = ()=>{
+    localStorage.removeItem("token");
+    dispatch(fetchUser())
+    console.log("ghdgdfg");
+  }
 
   return (
     <header className="header_area">
@@ -20,47 +32,22 @@ function Header() {
               <div className="top_single_area d-flex align-items-center justify-content-between">
                 {/* Logo Area */}
                 <div className="top_logo">
-                  <Link to={"/"}><img src={images.logo} alt=""/></Link>
+                  <Link to={"/"}><img src={images.logo} alt="" /></Link>
                 </div>
                 {/* Cart & Menu Area */}
                 <div className="header-cart-menu d-flex align-items-center ml-auto">
                   {/* Cart Area */}
-                  <div className="cart">
+                  {isAutorized && <div className="cart">
                     <Link to={"/cart"} id="header-cart-btn">
                       <span className="cart_quantity">
                         {countCartProducts}
                       </span>
                       <i className="ti-bag"></i> Your Bag $ {parseFloat(price.totalPrice).toFixed(2)}
                     </Link>
-                    {/* Cart List Area Start */}
-                    <ul className="cart-list">
-                      <li>
-                        <a href="#" className="image"><img src={images.product10} className="cart-thumb"
-                                                           alt=""/></a>
-                        <div className="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span className="price">$10</span></p>
-                        </div>
-                        <span className="dropdown-product-remove"><i className="icon-cross"></i></span>
-                      </li>
-                      <li>
-                        <a href="#" className="image"><img src={images.product11} className="cart-thumb"
-                                                           alt=""/></a>
-                        <div className="cart-item-desc">
-                          <h6><a href="#">Women's Fashion</a></h6>
-                          <p>1x - <span className="price">$10</span></p>
-                        </div>
-                        <span className="dropdown-product-remove"><i className="icon-cross"></i></span>
-                      </li>
-                      <li className="total">
-                        <span className="pull-right">Total: $20.00</span>
-                        <a href="cart.html" className="btn btn-sm btn-cart">Cart</a>
-                        <a href="checkout-1.html" className="btn btn-sm btn-checkout">Checkout</a>
-                      </li>
-                    </ul>
-                  </div>
+                  </div>}
                   <div className="header-right-side-menu ml-15">
-                    <a href="#" id="sideMenuBtn" onClick={()=>dispatch(changeNavAction())}><i className="ti-menu" aria-hidden="true"></i></a>
+                    <a href="#" id="sideMenuBtn" onClick={() => dispatch(changeNavAction())}><i className="ti-menu"
+                                                                                                aria-hidden="true"></i></a>
                   </div>
 
                 </div>
@@ -112,7 +99,24 @@ function Header() {
               </div>
               {/* Help Line */}
               <div className="help-line">
-                <Link to={"/login"}><i className="ti-user"></i> Login</Link>
+                {
+                  isAutorized ?
+                    <>
+                      <Link to={"/profile"}>
+                        <div className="userAvatar" style={{ backgroundImage: `url(${currentUser.avatar}` }} />
+                        <p className="userName">
+                          {currentUser.name}
+                        </p>
+                      </Link>
+                      <div className="logout" onClick={()=>logout()}>
+                        Logout
+                      </div>
+                    </> :
+                    <Link to={"/login"}>
+                      <i className="ti-user"></i> Login
+                    </Link>
+                }
+
               </div>
             </div>
           </div>

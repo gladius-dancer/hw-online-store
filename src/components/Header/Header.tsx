@@ -7,6 +7,8 @@ import { useIsAuthorized } from "../../hooks/useIsAuthorized";
 import { getUserAction } from "../../store/userInfoReduser";
 import "./Header.scss";
 import { fetchUser } from "../../store/actions";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/scss/main.scss';
 
 function Header() {
   const dispatch = useAppDispatch();
@@ -18,11 +20,21 @@ function Header() {
   const logout = ()=>{
     localStorage.removeItem("token");
     dispatch(fetchUser())
-    console.log("ghdgdfg");
+    toast.info('User succesfully logout!', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   }
 
   return (
     <header className="header_area">
+      <ToastContainer/>
       {/* Top Header Area Start */}
       <div className="top_header_area">
         <div className="container h-100">

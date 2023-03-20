@@ -6,10 +6,16 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../store/store";
 import { loginUser } from "../../store/actions";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/scss/main.scss';
+import { useIsAuthorized } from "../../hooks/useIsAuthorized";
+import { Link } from "react-router-dom";
+
 
 function Login() {
 
   const dispatch = useAppDispatch()
+  // const isAutorized = useIsAuthorized()
 
   const schema = yup.object().shape({
     email: yup.string().required().email(),
@@ -18,10 +24,13 @@ function Login() {
 
   const methods = useForm({resolver: yupResolver(schema)});
   const {handleSubmit, control, setValue, formState: {errors}} = methods;
-  const onSubmit = (data: any) => dispatch(loginUser(data));
+  const onSubmit = (data: any) => {
+    dispatch(loginUser(data));
+  }
 
   return (
     <div>
+      <ToastContainer/>
       <header className="header_area">
         <div className="top_header_area">
           <div className="container h-100">
@@ -30,7 +39,7 @@ function Login() {
                 <div className="top_single_area d-flex align-items-center justify-content-center">
                   {/* Logo Area */}
                   <div className="logo">
-                    <a href="#"><img src={images.logo} alt=""/></a>
+                    <Link to="/" ><img src={images.logo} alt=""/></Link>
                   </div>
                 </div>
               </div>

@@ -20,10 +20,14 @@ export function fetchUser() {
 export function loginUser(data: any) {
   return async function(dispatch: any) {
     const token = await login(data.email, data.password);
-    localStorage.setItem("token", JSON.stringify(token));
+    if(token !== null){
+      localStorage.setItem("token", JSON.stringify(token));
+
+    }else{
+
+    }
   };
 }
-
 
 export function fetchCategories() {
   return async function(dispatch: any) {
@@ -43,18 +47,20 @@ const getCategories = async () => {
 };
 
 const login = async (email: string, password: string) => {
+  try{
+    const response = await axios.post("https://api.escuelajs.co/api/v1/auth/login", null,
+      {
+        params: {
+          email: email,
+          password: password
+        }
+      });
+    return response.data.access_token;
+  }
+  catch (error) {
+    return null
+  }
 
-  console.log(email);
-  console.log(password);
-
-  const response = await axios.post("https://api.escuelajs.co/api/v1/auth/login", null,
-    {
-      params: {
-        email: email,
-        password: password
-      }
-    });
-  return response.data.access_token;
 };
 
 const getUser = async (token: string) => {
@@ -67,7 +73,7 @@ const getUser = async (token: string) => {
       });
     return response.data;
 
-  } catch (response) {
+  } catch (error) {
     return null;
   }
 

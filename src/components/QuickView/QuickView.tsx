@@ -1,5 +1,6 @@
 import React from "react";
 import "./QuickView.scss";
+import { Link } from "react-router-dom";
 
 type CurrentProductType = {
   id: number,
@@ -44,7 +45,7 @@ function QuickView(props: CurrentProductType) {
                       <h5 className="price">$ {props.price}
                         <span>$ {parseFloat(String(props.price * 130 / 100)).toFixed(2)}</span></h5>
                       <p>{(props.description) ? (props.description).split("").splice(0, 150).join("") + "..." : ""}</p>
-                      <a href="#">View Full Product Details</a>
+                      <Link to={`product-details/${props.id}`}>View Full Product Details</Link>
                     </div>
                     <div className="cart">
                       <button onClick={() => props.addToCart(props.id)} name="addtocart"

@@ -3,18 +3,9 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
 
 
-const options = [
-    {
-        label: "Delivery",
-        value: "1",
-    },
-    {
-        label: "Local pickup",
-        value: "2",
-    },
-];
 
-export const Dropdown = ({name, control, label}) => {
+
+export const Dropdown = ({name, control, label, options}) => {
     const generateSingleOptions = () => {
         return options.map((option) => {
             return (
@@ -26,7 +17,7 @@ export const Dropdown = ({name, control, label}) => {
     };
 
     return (
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+        <FormControl sx={{ m: 0, minWidth: 120 }} >
             <InputLabel>{label}</InputLabel>
             <Controller
                 defaultValue={''}

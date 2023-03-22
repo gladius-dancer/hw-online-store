@@ -22,9 +22,9 @@ export const InputCheckbox = ({name, control, setValue, label}) => {
         }
     };
 
-    useEffect(() => {
-        setValue(name, selectedItems);
-    }, [selectedItems]);
+    // useEffect(() => {
+    //     setValue(name, selectedItems);
+    // }, [selectedItems]);
 
     return (
         <FormControl size={"small"} variant={"outlined"}>

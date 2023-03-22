@@ -1,32 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import images from "../../assets/images";
 import { InputText } from "../../components/FormComponents/InputText";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loginUser } from "../../store/actions";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/scss/main.scss';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/scss/main.scss";
+import { Link, useNavigate } from "react-router-dom";
 import { useIsAuthorized } from "../../hooks/useIsAuthorized";
-import { Link } from "react-router-dom";
 
 
 function Login() {
 
-  const dispatch = useAppDispatch()
-  // const isAutorized = useIsAuthorized()
+  const dispatch: any = useAppDispatch()
+  const userStatus = useAppSelector(state=>state.currentUser.status);
+  const navigate = useNavigate();
 
   const schema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string().required().min(4),
   });
 
+  const isAuth = useIsAuthorized()
+  console.log(isAuth);
+
   const methods = useForm({resolver: yupResolver(schema)});
   const {handleSubmit, control, setValue, formState: {errors}} = methods;
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     dispatch(loginUser(data));
   }
+
+  useEffect(()=>{
+    if(userStatus){
+      navigate("/");
+    }
+  }, [userStatus])
+
+
 
   return (
     <div>

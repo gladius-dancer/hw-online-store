@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import { useEffect } from "react";
 import { fetchUser } from "./store/actions";
 import { useAppDispatch } from "./store/store";
+import Shop from "./pages/Shop/Shop";
 
 Modal.setAppElement("#root");
 
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/shop" element={<Shop />} />
       </Routes>
     </BrowserRouter>
   );

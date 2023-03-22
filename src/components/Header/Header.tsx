@@ -4,11 +4,11 @@ import { changeNavAction } from "../../store/changeNavReduser";
 import images from "../../assets/images";
 import { Link } from "react-router-dom";
 import { useIsAuthorized } from "../../hooks/useIsAuthorized";
-import { getUserAction } from "../../store/userInfoReduser";
 import "./Header.scss";
 import { fetchUser } from "../../store/actions";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/scss/main.scss';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/scss/main.scss";
+import { setStatusAction } from "../../store/userInfoReduser";
 
 function Header() {
   const dispatch = useAppDispatch();
@@ -20,6 +20,7 @@ function Header() {
   const logout = ()=>{
     localStorage.removeItem("token");
     dispatch(fetchUser())
+    dispatch(setStatusAction(false));
     toast.info('User succesfully logout!', {
       position: "top-right",
       autoClose: 3000,
@@ -58,8 +59,9 @@ function Header() {
                     </Link>
                   </div>}
                   <div className="header-right-side-menu ml-15">
-                    <a href="#" id="sideMenuBtn" onClick={() => dispatch(changeNavAction())}><i className="ti-menu"
-                                                                                                aria-hidden="true"></i></a>
+                    <a href="#" id="sideMenuBtn" onClick={() => dispatch(changeNavAction())}>
+                      <i className="ti-menu" aria-hidden="true"></i>
+                    </a>
                   </div>
 
                 </div>

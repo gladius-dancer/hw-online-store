@@ -17,7 +17,8 @@ const rootReduser = combineReducers({
   cart: cartReduser,
   price: priceReduser,
   shipping: shippingReduser,
-  currentUser: userInfoReduser
+  currentUser: userInfoReduser,
+
 })
 
 const store = createStore(rootReduser, composeWithDevTools(applyMiddleware(thunk)));

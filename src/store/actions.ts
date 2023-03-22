@@ -1,12 +1,19 @@
 import axios from "axios";
 import { setProductsAction } from "./productsReduser";
-import { setUserAction } from "./userInfoReduser";
+import { setStatusAction, setUserAction } from "./userInfoReduser";
 import { setCategoriesAction } from "./categoriesReduser";
 
 export function fetchProducts(offset: number) {
   return async function(dispatch: any) {
     const products = await getProducts(offset);
     dispatch(setProductsAction(products));
+  };
+}
+
+export function fetchFilteredProducts(category: number, min: number, max: number) {
+  return async function(dispatch: any) {
+    const filteredProducts = await getFilteredProducts(category, min, max);
+    dispatch(setProductsAction(filteredProducts));
   };
 }
 
@@ -22,9 +29,10 @@ export function loginUser(data: any) {
     const token = await login(data.email, data.password);
     if(token !== null){
       localStorage.setItem("token", JSON.stringify(token));
-
+      dispatch(setStatusAction(true));
+      dispatch(fetchUser())
     }else{
-
+      dispatch(setStatusAction(false));
     }
   };
 }
@@ -38,6 +46,11 @@ export function fetchCategories() {
 
 const getProducts = async (offset = 0) => {
   const response = await axios.get(`https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=9`);
+  return response.data;
+};
+
+const getFilteredProducts = async (category: number, min: number, max: number) => {
+  const response = await axios.get(`https://api.escuelajs.co/api/v1/products/?price_min=${min}&price_max=${max}&categoryId=${category}`);
   return response.data;
 };
 
@@ -76,6 +89,5 @@ const getUser = async (token: string) => {
   } catch (error) {
     return null;
   }
-
 };
 

@@ -653,18 +653,24 @@ img {
   border-bottom: 1px solid #ebebeb;
 }
 
-.menu-content li a {
+.menu-content li {
   position: relative;
   text-transform: capitalize;
   z-index: 1;
-  text-decoration: none;
-  color: #3a3a3a;
   height: 45px;
   display: block;
   line-height: 45px;
   padding-left: 30px;
   font-size: 13px;
+
+  a{
+    text-decoration: none;
+    color: #3a3a3a;
+
+  }
 }
+
+
 
 .menu-content .sub-menu li a {
   position: relative;
@@ -691,7 +697,7 @@ img {
   left: 0;
 }
 
-.menu-content > li > a:before {
+.menu-content > li:before {
   width: 10px;
   height: 10px;
   border: 1px solid #ff084e;
@@ -706,7 +712,7 @@ img {
   left: 0;
 }
 
-.menu-content > li.collapsed > a:before {
+.menu-content > li.collapsed:before {
   width: 10px;
   height: 10px;
   border: 1px solid #858585;
@@ -1128,7 +1134,7 @@ img {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 }
 
-.product-img .product-quicview > a {
+.product-img .product-quicview > p {
   width: 72px;
   height: 72px;
   border: 2px solid rgba(255, 255, 255, 0.8);

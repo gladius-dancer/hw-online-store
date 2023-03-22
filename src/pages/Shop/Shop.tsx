@@ -1,22 +1,22 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
-import Footer from "../../components/Footer/Footer";
+import React, { useEffect, useState } from "react";
 import Categories from "../../components/Categories/Categories";
 import Header from "../../components/Header/Header";
 import Discount from "../../components/Discount/Discount";
+import Footer from "../../components/Footer/Footer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import SideBar from "../../components/SideBar/SideBar";
+import ProductList from "../../components/ProductList/ProductList";
 import { useIsAuthorized } from "../../hooks/useIsAuthorized";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { addProductAction, updateProductsAction } from "../../store/cartReduser";
 import { setPriceAction } from "../../store/priceReduser";
 import { ProductType } from "../../types/ProductType";
 import { fetchProducts } from "../../store/actions";
-import ProductList from "../../components/ProductList/ProductList";
-import ModalComponent from "../../components/Modal/ModalComponent";
 import QuickView from "../../components/QuickView/QuickView";
+import ModalComponent from "../../components/Modal/ModalComponent";
 
-const Main = () => {
+function Shop() {
 
   const nav = useAppSelector(state => state.changeNAv);
   const dispatch = useAppDispatch();
@@ -88,46 +88,46 @@ const Main = () => {
     <>
       <Categories />
       <div id="wrapper" className={nav ? "karl-side-menu-open" : ""}>
-        <Header/>
-        <Discount/>
-          <ToastContainer />
-          <section className="new_arrivals_area section_padding_100_0 clearfix">
-            <div className="container">
-              <div className="row">
-                <div className="col-12">
-                  <div className="section_heading text-center">
-                    <h2>Our products</h2>
-                  </div>
+        <Header />
+        <Discount />
+        <section className="shop_grid_area section_padding_100">
+          <div className="container">
+            <div className="row">
+              <SideBar />
+              <div className="col-12 col-md-8 col-lg-9">
+                <div className="shop_grid_product_area">
+                  <ProductList
+                    products={products}
+                    showDetails={showDetails}
+                    addToCart={addToCart}
+                    currentPage={currentPage}
+                    handleChange={handleChange}
+                  />
+                  <ModalComponent
+                    isOpen={modal}
+                    className="modal"
+                    overlayClassName="modal-overlay"
+                  >
+                    <QuickView
+                      id={currentProduct.id}
+                      image={currentProduct.images}
+                      title={currentProduct.title}
+                      price={currentProduct.price}
+                      description={currentProduct.description}
+                      setModal={setModal}
+                      addToCart={addToCart}
+                    />
+                  </ModalComponent>
                 </div>
               </div>
             </div>
-            <ProductList
-              products={products}
-              showDetails={showDetails}
-              addToCart={addToCart}
-              currentPage={currentPage}
-              handleChange={handleChange}
-            />
-            <ModalComponent
-              isOpen={modal}
-              className="modal"
-              overlayClassName="modal-overlay"
-            >
-              <QuickView
-                id={currentProduct.id}
-                image={currentProduct.images}
-                title={currentProduct.title}
-                price={currentProduct.price}
-                description={currentProduct.description}
-                setModal={setModal}
-                addToCart={addToCart}
-              />
-            </ModalComponent>
-          </section>
-        <Footer/>
+          </div>
+        </section>
+        <Footer />
       </div>
+
     </>
   );
-};
+}
 
-export default Main;
+export default Shop;

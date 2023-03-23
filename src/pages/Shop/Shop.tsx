@@ -69,7 +69,6 @@ function Shop() {
   };
 
   const showDetails = (id: number) => {
-    console.log(id);
     setModal(true);
     const current: ProductType = products.filter((product: any) => product.id === id)[0];
     setSetCurrentProduct(current);

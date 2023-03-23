@@ -1,19 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Categories from "../../components/Categories/Categories";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { updateProductsAction } from "../../store/cartReduser";
-import { Link } from "react-router-dom";
 import { setPriceAction } from "../../store/priceReduser";
-import { setShippingAction } from "../../store/shippingReduser";
 import { InputText } from "../../components/FormComponents/InputText";
 import { Dropdown } from "../../components/FormComponents/Dropdown";
 import { InputCheckbox } from "../../components/FormComponents/Checkbox";
+import { FormHelperText } from "@mui/material";
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginUser } from "../../store/actions";
 
 const options = [
   {
@@ -42,26 +44,24 @@ function Checkout() {
   const price: any = useAppSelector(state => state.price);
   const shipping: any = useAppSelector(state => state.shipping);
 
-  const incCount = (id: number) => {
-    dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count + 1 } : item)));
-    priceCalc();
-  };
+  const [cash, setCash] = useState(false);
+  const [terms, setTerms] = useState(false);
+  const [account, setAccount] = useState(false);
+  const [subscribe, setSubscribe] = useState(false);
+  const [cashError, setCashError] = useState(false);
+  const [termsError, setTermsError] = useState(false);
+  const [accountError, setAccountError] = useState(false);
+  const [subscribeError, setSubscribeError] = useState(false);
+  const [paypal, setPaypal] = useState(true);
+  const [card, setCard] = useState(false);
 
-  const decCount = (id: number) => {
-    if (cart.find((item: any) => item.id === id).count > 1) {
-      dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? {
-        ...item,
-        count: item.count - 1
-      } : item)));
-    } else {
-      dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? { ...item, count: item.count } : item)));
-    }
-    priceCalc();
-  };
 
-  const deleteProduct = (id: number) => {
-    dispatch(updateProductsAction(cart.filter((item: any) => item.id !== id)));
-  };
+  const [expanded, setExpanded] = React.useState<string | boolean>("1");
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   const priceCalc = () => {
     const totalPrice = cart.reduce((summ: number, current: any) => {
@@ -72,14 +72,26 @@ function Checkout() {
     return totalPrice;
   };
 
-  const changeShipping = (value: string) => {
-    dispatch(setShippingAction(value));
-    return value;
-  };
-
-  const clear = () => {
-    dispatch(updateProductsAction([]));
-  };
+  useEffect(()=>{
+    if(expanded === "1"){
+      setPaypal(true);
+      setCard(false);
+      console.log(paypal);
+      console.log(card);
+    }
+    else if(expanded === "2"){
+      setPaypal(false);
+      setCard(true);
+      console.log(paypal);
+      console.log(card);
+    }
+    else{
+      setPaypal(false);
+      setCard(false);
+      console.log(paypal);
+      console.log(card);
+    }
+  },[expanded])
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -89,22 +101,57 @@ function Checkout() {
   }, [cart, shipping]);
 
   const schema = yup.object().shape({
-    name: yup.string().required(),
-    last: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string().required().email(),
     country: yup.string().required(),
     address: yup.string().required(),
     number: yup.string().required(),
-    postalCode: yup.string().required()
+    postalCode: yup.string().required(),
+    paypal: paypal ? yup.string().required():false,
+    card: card ? yup.string().required():false,
   });
 
   const methods = useForm({ resolver: yupResolver(schema) });
   const { handleSubmit, control, setValue, formState: { errors } } = methods;
-  const onSubmit = async (data: any) => {
-    dispatch(loginUser(data));
+  const onSubmit = async (data: any, event: any) => {
+    event.preventDefault();
+
+    if (!terms) {
+      setTermsError(true);
+    }
+    if (!subscribe) {
+      setSubscribeError(true);
+    }
+    if (!account) {
+      setAccountError(true);
+    }
+    if (!cash) {
+      setCashError(true);
+    }
+    if(terms && account && subscribe && cash){
+      alert("Successfully");
+    }
   };
 
-  // @ts-ignore
+  const termsChange = (event: any) => {
+    setTerms(event.target.checked);
+    setTermsError(false);
+  };
+  const accountChange = (event: any) => {
+    setAccount(event.target.checked);
+    setAccountError(false);
+  };
+  const subscribeChange = (event: any) => {
+    setSubscribe(event.target.checked);
+    setSubscribeError(false);
+  };
+  const setCashMethod = (event: any) => {
+    setCash(event.target.checked);
+    setCashError(false);
+  };
+
+
   return (
     <>
       <Categories />
@@ -112,7 +159,7 @@ function Checkout() {
         <Header />
         <div className="checkout_area pt-30 mb-50">
           <div className="container">
-            <form className="row" action="#" method="post">
+            <form onSubmit={handleSubmit(onSubmit)} className="row" action="#" method="post">
 
               <div className="col-12 col-md-6">
                 <div className="checkout_details_area clearfix">
@@ -146,14 +193,18 @@ function Checkout() {
                           name="country"
                           control={control}
                           options={options}
+
                         />
+                        <p className="ml-15">
+                          {errors.country && <FormHelperText error>{errors.country.message}</FormHelperText>}
+                        </p>
                       </div>
                       <div className="col-12 mb-3">
                         <label htmlFor="street_address">Address <span>*</span></label>
                         <InputText
-                          key="adress"
+                          key="address"
                           status={true}
-                          name="adress"
+                          name="address"
                           control={control}
                         />
                       </div>
@@ -191,25 +242,33 @@ function Checkout() {
                             key="terms"
                             name="terms"
                             control={control}
+                            label="Terms and conitions"
+                            checked={terms}
+                            onChange={termsChange}
+                            error={termsError}
                           />
-                          <label className="m-0" htmlFor="customCheck1">Terms and conitions</label>
                         </div>
                         <div className="custom-control custom-checkbox d-flex align-items-center mb-1">
                           <InputCheckbox
                             key="account"
                             name="account"
                             control={control}
+                            label="Create an accout"
+                            checked={account}
+                            onChange={accountChange}
+                            error={accountError}
                           />
-                          <label className="m-0" htmlFor="customCheck2">Create an accout</label>
                         </div>
                         <div className="custom-control custom-checkbox d-flex align-items-center">
                           <InputCheckbox
                             key="subscribe"
                             name="subscribe"
                             control={control}
+                            label="Subscribe to our newsletter"
+                            checked={subscribe}
+                            onChange={subscribeChange}
+                            error={subscribeError}
                           />
-                          <label className="m-0" htmlFor="customCheck3">Subscribe to our
-                            newsletter</label>
                         </div>
                       </div>
                     </div>
@@ -219,70 +278,74 @@ function Checkout() {
 
               <div className="col-12 col-md-6 col-lg-5 ml-lg-auto">
                 <div className="order-details-confirmation">
-
                   <div className="cart-page-heading">
                     <h5>Your Order</h5>
                     <p>The Details</p>
                   </div>
-
                   <ul className="order-details-form mb-4">
                     <li><span>Product</span> <span>Price</span></li>
-                    <li><span>Subtotal</span> <span>$59.90</span></li>
-                    <li><span>Shipping</span> <span>Free</span></li>
-                    <li><span>Total</span> <span>$59.90</span></li>
+                    <li><span>Subtotal</span> <span>$ {parseFloat(price.totalPrice).toFixed(2)}</span></li>
+                    <li><span>Shipping</span> <span>{shipping[shipping.current] > 0 ? shipping[shipping.current] : "Free"}</span></li>
+                    <li><span>Total</span> <span>$ {parseFloat(price.totalPrice + shipping[shipping.current]).toFixed(2)}</span></li>
                   </ul>
 
-                  <div id="accordion" role="tablist" className="mb-4">
-                    <div className="card">
-                      <div className="card-header" role="tab" id="headingOne">
-                        <h6 className="mb-0">
-                          <a data-toggle="collapse" href="#collapseOne" aria-expanded="false"
-                             aria-controls="collapseOne"><i className="fa fa-circle-o mr-3"></i>Paypal</a>
-                        </h6>
-                      </div>
 
-                      <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne"
-                           data-parent="#accordion">
-                        <div className="card-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales.
-                            Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur
-                            lacus.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-header" role="tab" id="headingTwo">
-                        <h6 className="mb-0">
-                          <a className="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false"
-                             aria-controls="collapseTwo"><i className="fa fa-circle-o mr-3"></i>cash on delievery</a>
-                        </h6>
-                      </div>
-                      <div id="collapseTwo" className="collapse" role="tabpanel" aria-labelledby="headingTwo"
-                           data-parent="#accordion">
-                        <div className="card-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis
-                            officia inventore, tempore provident dignissimos.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-header" role="tab" id="headingThree">
-                        <h6 className="mb-0">
-                          <a className="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false"
-                             aria-controls="collapseThree"><i className="fa fa-circle-o mr-3"></i>credit card</a>
-                        </h6>
-                      </div>
-                      <div id="collapseThree" className="collapse" role="tabpanel" aria-labelledby="headingThree"
-                           data-parent="#accordion">
-                        <div className="card-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae
-                            suscipit ab soluta delectus voluptate, vero vitae</p>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="mb-30">
+                    <Accordion expanded={expanded === '1'} onChange={handleChange('1')}>
+                      <AccordionSummary
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography>PAYPAL</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <InputText
+                          key="paypal"
+                          status={true}
+                          name="paypal"
+                          control={control}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '2'} onChange={handleChange('2')}>
+                      <AccordionSummary
+                        aria-controls="panel2a-content"
+                        id="panel2a-header"
+                      >
+                        <Typography>CREDIT CARD</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <InputText
+                          key="card"
+                          status={true}
+                          name="card"
+                          control={control}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+                    <Accordion expanded={expanded === '3'} onChange={handleChange('3')}>
+                      <AccordionSummary
+                        aria-controls="panel2a-content"
+                        id="panel2a-header"
+                      >
+                        <Typography>CASH ON DELIEVERY</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <InputCheckbox
+                          key="cash"
+                          name="cash"
+                          control={control}
+                          label="I agree to pay in cash"
+                          checked={cash}
+                          onChange={setCashMethod}
+                          error={cashError}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+
                   </div>
 
-                  <a href="#" className="btn karl-checkout-btn">Place Order</a>
+                  <button type="submit" className="btn karl-checkout-btn">Place Order</button>
                 </div>
               </div>
 

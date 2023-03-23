@@ -1,7 +1,7 @@
 // shared config (dev and prod)
 const { resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
+// const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./index.tsx",
@@ -70,10 +70,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: "index.html" }),
-    new CopyPlugin({
-      patterns: [
-        { from: "public", to: "public" }
-      ]
-    })
+    // new CopyPlugin({
+    //   patterns: [
+    //     { from: "public", to: "public" }
+    //   ]
+    // })
   ]
 };

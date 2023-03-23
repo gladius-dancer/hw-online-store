@@ -24,7 +24,6 @@ function Login() {
   });
 
   const isAuth = useIsAuthorized()
-  console.log(isAuth);
 
   const methods = useForm({resolver: yupResolver(schema)});
   const {handleSubmit, control, setValue, formState: {errors}} = methods;

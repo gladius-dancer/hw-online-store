@@ -17,7 +17,6 @@ import ModalComponent from "../../components/Modal/ModalComponent";
 import QuickView from "../../components/QuickView/QuickView";
 
 const Main = () => {
-
   const nav = useAppSelector(state => state.changeNAv);
   const dispatch = useAppDispatch();
   const products = useAppSelector(state => state.products.products);
@@ -69,7 +68,6 @@ const Main = () => {
   };
 
   const showDetails = (id: number) => {
-    console.log(id);
     setModal(true);
     const current: ProductType = products.filter((product: any) => product.id === id)[0];
     setSetCurrentProduct(current);

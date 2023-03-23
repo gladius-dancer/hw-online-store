@@ -20,10 +20,8 @@ const ProductDetails = () => {
   const cart = useAppSelector(state => state.cart);
   const isAuth = useIsAuthorized();
   const navigate = useNavigate();
-  const match = useMatch("/character/:id");
+  const match = useMatch("/product-details/:id");
   // const product = products.find((item: any)=>item.id===match.params.id);
-
-  console.log(match);
 
 
   const notifyAddProduct = () => toast.success("Product added to cart!", {

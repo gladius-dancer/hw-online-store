@@ -1,56 +1,27 @@
-import React, {useEffect, useState} from "react";
-import {FormControl, FormControlLabel, FormLabel} from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
-import {Controller} from "react-hook-form";
+import React from "react";
+import { FormControl, FormControlLabel, FormHelperText } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import { FormInputProps } from "./FormInputProps";
 
-const options =
-    {
-        label: "",
-        value: "1",
-    };
+export const InputCheckbox = ({ name, error, label, checked, onChange }: FormInputProps) => {
 
-export const InputCheckbox = ({name, control, setValue, label}) => {
-    const [selectedItems, setSelectedItems] = useState ([]);
+  return (
+    <FormControl error={error}>
+      <div className="d-flex align-items-center">
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={checked}
+              onChange={onChange}
+              name={name}
+              color="primary"
+            />
+          }
+          label={label}
+        />
+        {error && <FormHelperText>Please agree ...</FormHelperText>}
+      </div>
+    </FormControl>
+  );
 
-    const handleSelect = (value) => {
-        const isPresent = selectedItems.indexOf(value);
-        if (isPresent !== -1) {
-            const remaining = selectedItems.filter((item) => item !== value);
-            setSelectedItems(remaining);
-        } else {
-            setSelectedItems((prevItems) => [...prevItems, value]);
-        }
-    };
-
-    // useEffect(() => {
-    //     setValue(name, selectedItems);
-    // }, [selectedItems]);
-
-    return (
-        <FormControl size={"small"} variant={"outlined"}>
-            <FormLabel component="legend">{label}</FormLabel>
-
-            <div>
-                <FormControlLabel
-                    control={
-                        <Controller
-                            name={name}
-                            defaultValue={''}
-                            render={({}) => {
-                                return (
-                                    <Checkbox
-                                        checked={selectedItems.includes(options.value)}
-                                        onChange={() => handleSelect(options.value)}
-                                    />
-                                );
-                            }}
-                            control={control}
-                        />
-                    }
-                    label={options.label}
-                    key={options.value}
-                />
-            </div>
-        </FormControl>
-    );
 };

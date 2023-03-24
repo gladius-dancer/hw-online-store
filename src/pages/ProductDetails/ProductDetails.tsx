@@ -20,12 +20,12 @@ const ProductDetails = () => {
   const cart = useAppSelector(state => state.cart);
   const isAuth = useIsAuthorized();
   const navigate = useNavigate();
-  const match = useMatch("/product-details/:id");
-  // const product = products.find((item: any)=>item.id===match.params.id);
-
+  const match = useMatch("/details/:id");
+  const product = products.find((item: any)=>item.id === match?.params.id);
+  console.log(product);
 
   const notifyAddProduct = () => toast.success("Product added to cart!", {
-    position: "top-right",
+    position: "top-left",
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -99,6 +99,16 @@ const ProductDetails = () => {
                           <img className="d-block w-100" src={images.product9} alt="First slide"/>
                         </a>
                       </div>
+                      <div className="carousel-item active">
+                        <a className="gallery_img" href={images.product9}>
+                          <img className="d-block w-100" src={images.product9} alt="First slide"/>
+                        </a>
+                      </div>
+                      <div className="carousel-item active">
+                        <a className="gallery_img" href={images.product9}>
+                          <img className="d-block w-100" src={images.product9} alt="First slide"/>
+                        </a>
+                      </div>
 
                     </div>
                   </div>
@@ -122,21 +132,11 @@ const ProductDetails = () => {
                     <i className="fa fa-star-o" aria-hidden="true"></i>
                   </div>
 
-                  {/* Add to Cart Form */}
-                  {/*<form className="cart clearfix mb-50 d-flex" method="post">*/}
-                  {/*  <div className="quantity">*/}
-                  {/*    <span className="qty-minus"*/}
-                  {/*          onClick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i*/}
-                  {/*      className="fa fa-minus" aria-hidden="true"></i></span>*/}
-                  {/*    <input type="number" className="qty-text" id="qty" step="1" min="1" max="12" name="quantity"*/}
-                  {/*           value="1">*/}
-                  {/*      <span className="qty-plus"*/}
-                  {/*            onClick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i*/}
-                  {/*        className="fa fa-plus" aria-hidden="true"></i></span>*/}
-                  {/*  </div>*/}
-                  {/*  <button type="submit" name="addtocart" value="5" className="btn cart-submit d-block">Add to cart*/}
-                  {/*  </button>*/}
-                  {/*</form>*/}
+                   {/*Add to Cart Form */}
+                  <form className="cart clearfix mb-50 d-flex" method="post">
+                    <button type="submit" name="addtocart" value="5" className="btn cart-submit d-block">Add to cart
+                    </button>
+                  </form>
 
                   <div id="accordion" role="tablist">
                     <div className="card">

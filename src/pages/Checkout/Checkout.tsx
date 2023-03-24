@@ -8,11 +8,11 @@ import { InputText } from "../../components/FormComponents/InputText";
 import { Dropdown } from "../../components/FormComponents/Dropdown";
 import { InputCheckbox } from "../../components/FormComponents/Checkbox";
 import { FormHelperText } from "@mui/material";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,20 +20,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const options = [
   {
     label: "Karakalpakstan",
-    value: "1",
+    value: "1"
   },
   {
     label: "United Kingdom",
-    value: "2",
+    value: "2"
   },
   {
     label: "Germany",
-    value: "3",
+    value: "3"
   },
   {
     label: "United States",
-    value: "4",
-  },
+    value: "4"
+  }
 ];
 
 function Checkout() {
@@ -72,26 +72,23 @@ function Checkout() {
     return totalPrice;
   };
 
-  useEffect(()=>{
-    if(expanded === "1"){
+  useEffect(() => {
+    if (expanded === "1") {
       setPaypal(true);
       setCard(false);
-      console.log(paypal);
-      console.log(card);
+      setCash(true);
     }
-    else if(expanded === "2"){
+    else if (expanded === "2") {
       setPaypal(false);
       setCard(true);
-      console.log(paypal);
-      console.log(card);
+      setCash(true);
     }
-    else{
+    else {
       setPaypal(false);
       setCard(false);
-      console.log(paypal);
-      console.log(card);
+      setCash(false);
     }
-  },[expanded])
+  }, [expanded]);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -108,8 +105,8 @@ function Checkout() {
     address: yup.string().required(),
     number: yup.string().required(),
     postalCode: yup.string().required(),
-    paypal: paypal ? yup.string().required():false,
-    card: card ? yup.string().required():false,
+    paypal: paypal ? yup.string().required() : "",
+    card: card ? yup.string().required() : ""
   });
 
   const methods = useForm({ resolver: yupResolver(schema) });
@@ -129,7 +126,7 @@ function Checkout() {
     if (!cash) {
       setCashError(true);
     }
-    if(terms && account && subscribe && cash){
+    if (terms && account && subscribe && cash) {
       alert("Successfully");
     }
   };
@@ -285,13 +282,15 @@ function Checkout() {
                   <ul className="order-details-form mb-4">
                     <li><span>Product</span> <span>Price</span></li>
                     <li><span>Subtotal</span> <span>$ {parseFloat(price.totalPrice).toFixed(2)}</span></li>
-                    <li><span>Shipping</span> <span>{shipping[shipping.current] > 0 ? shipping[shipping.current] : "Free"}</span></li>
-                    <li><span>Total</span> <span>$ {parseFloat(price.totalPrice + shipping[shipping.current]).toFixed(2)}</span></li>
+                    <li><span>Shipping</span>
+                      <span>{shipping[shipping.current] > 0 ? shipping[shipping.current] : "Free"}</span></li>
+                    <li><span>Total</span>
+                      <span>$ {parseFloat(price.totalPrice + shipping[shipping.current]).toFixed(2)}</span></li>
                   </ul>
 
 
                   <div className="mb-30">
-                    <Accordion expanded={expanded === '1'} onChange={handleChange('1')}>
+                    <Accordion expanded={expanded === "1"} onChange={handleChange("1")}>
                       <AccordionSummary
                         aria-controls="panel1a-content"
                         id="panel1a-header"
@@ -307,7 +306,7 @@ function Checkout() {
                         />
                       </AccordionDetails>
                     </Accordion>
-                    <Accordion expanded={expanded === '2'} onChange={handleChange('2')}>
+                    <Accordion expanded={expanded === "2"} onChange={handleChange("2")}>
                       <AccordionSummary
                         aria-controls="panel2a-content"
                         id="panel2a-header"
@@ -323,7 +322,7 @@ function Checkout() {
                         />
                       </AccordionDetails>
                     </Accordion>
-                    <Accordion expanded={expanded === '3'} onChange={handleChange('3')}>
+                    <Accordion expanded={expanded === "3"} onChange={handleChange("3")}>
                       <AccordionSummary
                         aria-controls="panel2a-content"
                         id="panel2a-header"

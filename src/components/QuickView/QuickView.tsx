@@ -8,6 +8,7 @@ type CurrentProductType = {
   title: string,
   price: number,
   description: string,
+  link: string,
   setModal: any,
   addToCart: any
 }
@@ -45,7 +46,7 @@ function QuickView(props: CurrentProductType) {
                       <h5 className="price">$ {props.price}
                         <span>$ {parseFloat(String(props.price * 130 / 100)).toFixed(2)}</span></h5>
                       <p>{(props.description) ? (props.description).split("").splice(0, 150).join("") + "..." : ""}</p>
-                      <Link to={`product-details/${props.id}`}>View Full Product Details</Link>
+                      <Link to={`${props.link}/${props.id}`}>View Full Product Details</Link>
                     </div>
                     <div className="cart">
                       <button onClick={() => props.addToCart(props.id)} name="addtocart"

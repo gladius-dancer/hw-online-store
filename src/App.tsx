@@ -11,12 +11,13 @@ import { useAppDispatch } from "./store/store";
 import Shop from "./pages/Shop/Shop";
 import Checkout from "./pages/Checkout/Checkout";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+// import { Switch } from "react-router";
 
 Modal.setAppElement("#root");
 
 const App = () => {
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchUser());
   }, []);
@@ -24,17 +25,19 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/*<Switch>*/}
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/product-details/:id" element={<ProductDetails />} />
+        <Route path="/details/:id" element={<ProductDetails />} />
       </Routes>
+      {/*</Switch>*/}
+
     </BrowserRouter>
   );
 };
-
 
 
 export default App;

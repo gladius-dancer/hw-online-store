@@ -33,7 +33,7 @@ function Shop() {
   };
 
   const notifyAddProduct = () => toast.success("Product added to cart!", {
-    position: "top-right",
+    position: "top-left",
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -115,6 +115,7 @@ function Shop() {
                       description={currentProduct.description}
                       setModal={setModal}
                       addToCart={addToCart}
+                      link="../details"
                     />
                   </ModalComponent>
                 </div>

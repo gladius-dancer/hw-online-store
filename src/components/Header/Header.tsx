@@ -22,7 +22,7 @@ function Header() {
     dispatch(fetchUser())
     dispatch(setStatusAction(false));
     toast.info('User succesfully logout!', {
-      position: "top-right",
+      position: "top-left",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,

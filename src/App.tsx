@@ -11,7 +11,6 @@ import { useAppDispatch } from "./store/store";
 import Shop from "./pages/Shop/Shop";
 import Checkout from "./pages/Checkout/Checkout";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
-// import { Switch } from "react-router";
 
 Modal.setAppElement("#root");
 
@@ -25,7 +24,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/*<Switch>*/}
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
@@ -33,7 +31,6 @@ const App = () => {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/details/:id" element={<ProductDetails />} />
       </Routes>
-      {/*</Switch>*/}
 
     </BrowserRouter>
   );

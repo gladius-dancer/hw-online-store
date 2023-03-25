@@ -9,8 +9,7 @@ import { useIsAuthorized } from "../../hooks/useIsAuthorized";
 import { useMatch, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { addProductAction, updateProductsAction } from "../../store/cartReduser";
-import { setPriceAction } from "../../store/priceReduser";
-import images from "../../assets/images";
+import { Link, useLocation } from "react-router-dom";
 
 const ProductDetails = () => {
 
@@ -21,8 +20,7 @@ const ProductDetails = () => {
   const isAuth = useIsAuthorized();
   const navigate = useNavigate();
   const match = useMatch("/details/:id");
-  const product = products.find((item: any)=>item.id === match?.params.id);
-  console.log(product);
+  const product = products.find((item: any) => item.id == match.params.id);
 
   const notifyAddProduct = () => toast.success("Product added to cart!", {
     position: "top-left",
@@ -51,25 +49,40 @@ const ProductDetails = () => {
     }
   };
 
-  const priceCalc = () => {
-    const totalPrice = cart.reduce((summ: number, current: any) => {
-      return summ + (current.price * current.count);
-    }, 0);
-
-    dispatch(setPriceAction({ totalPrice: totalPrice, shipping: 0 }));
-  };
-
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
-    priceCalc();
   }, [cart]);
+
+  const location = useLocation();
+  const paths = location.pathname.split("/").filter(path => path !== "");
+  let breadcrumb = "";
+
 
   return (
     <>
       <Categories />
       <div id="wrapper" className={nav ? "karl-side-menu-open" : ""}>
-        <Header/>
-        <Discount/>
+        <Header />
+        <Discount />
+        <div className="breadcumb_area">
+          <div className="container">
+            <div className="row">
+              <div className="text-capitalize">
+                <Link to="/">home /</Link>
+                {paths.map((path, index) => {
+                  breadcrumb += "/" + path;
+                  if (index === paths.length - 1) {
+                    return <span key={index}>{path}</span>;
+                  }
+                  return (
+                    <span key={index}>{path} /&nbsp; </span>
+                  );
+                })}
+              </div>
+
+            </div>
+          </div>
+        </div>
         <ToastContainer />
 
         <section className="single_product_details_area section_padding_0_100">
@@ -82,31 +95,31 @@ const ProductDetails = () => {
 
                     <ol className="carousel-indicators">
                       <li className="active" data-target="#product_details_slider" data-slide-to="0"
-                          style={{backgroundImage: `url(${images.product1})`}}>
+                          style={{ backgroundImage: `url(${product.images[0]})` }}>
                       </li>
-                      <li className="active" data-target="#product_details_slider" data-slide-to="0"
-                          style={{backgroundImage: `url(${images.product2})`}}>
+                      <li data-target="#product_details_slider" data-slide-to="1"
+                          style={{ backgroundImage: `url(${product.images[1]})` }}>
                       </li>
-                      <li className="active" data-target="#product_details_slider" data-slide-to="0"
-                          style={{backgroundImage: `url(${images.product3})`}}>
+                      <li data-target="#product_details_slider" data-slide-to="2"
+                          style={{ backgroundImage: `url(${product.images[2]})` }}>
                       </li>
 
                     </ol>
 
                     <div className="carousel-inner">
                       <div className="carousel-item active">
-                        <a className="gallery_img" href={images.product9}>
-                          <img className="d-block w-100" src={images.product9} alt="First slide"/>
+                        <a className="gallery_img">
+                          <img className="d-block w-100" src={product.images[0]} alt="First slide" />
                         </a>
                       </div>
-                      <div className="carousel-item active">
-                        <a className="gallery_img" href={images.product9}>
-                          <img className="d-block w-100" src={images.product9} alt="First slide"/>
+                      <div className="carousel-item">
+                        <a className="gallery_img">
+                          <img className="d-block w-100" src={product.images[1]} alt="First slide" />
                         </a>
                       </div>
-                      <div className="carousel-item active">
-                        <a className="gallery_img" href={images.product9}>
-                          <img className="d-block w-100" src={images.product9} alt="First slide"/>
+                      <div className="carousel-item">
+                        <a className="gallery_img">
+                          <img className="d-block w-100" src={product.images[2]} alt="First slide" />
                         </a>
                       </div>
 
@@ -118,9 +131,9 @@ const ProductDetails = () => {
               <div className="col-12 col-md-6">
                 <div className="single_product_desc">
 
-                  <h4 className="title"><a href="#">Long Yellow Dress</a></h4>
+                  <h4 className="title"><a href="#">{product.title}</a></h4>
 
-                  <h4 className="price">$ 39.99</h4>
+                  <h4 className="price">$ {product.price}</h4>
 
                   <p className="available">Available: <span className="text-muted">In Stock</span></p>
 
@@ -132,9 +145,10 @@ const ProductDetails = () => {
                     <i className="fa fa-star-o" aria-hidden="true"></i>
                   </div>
 
-                   {/*Add to Cart Form */}
+                  {/*Add to Cart Form */}
                   <form className="cart clearfix mb-50 d-flex" method="post">
-                    <button type="submit" name="addtocart" value="5" className="btn cart-submit d-block">Add to cart
+                    <button onClick={() => addToCart(product.id)} name="addtocart" value="5"
+                            className="btn cart-submit d-block">Add to cart
                     </button>
                   </form>
 
@@ -150,47 +164,7 @@ const ProductDetails = () => {
                       <div id="collapseOne" className="collapse show" role="tabpanel" aria-labelledby="headingOne"
                            data-parent="#accordion">
                         <div className="card-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales.
-                            Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur
-                            lacus.</p>
-                          <p>Approx length 66cm/26" (Based on a UK size 8 sample) Mixed fibres</p>
-                          <p>The Model wears a UK size 8/ EU size 36/ US size 4 and her height is 5'8"</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-header" role="tab" id="headingTwo">
-                        <h6 className="mb-0">
-                          <a className="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false"
-                             aria-controls="collapseTwo">Cart Details</a>
-                        </h6>
-                      </div>
-                      <div id="collapseTwo" className="collapse" role="tabpanel" aria-labelledby="headingTwo"
-                           data-parent="#accordion">
-                        <div className="card-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis
-                            officia inventore, tempore provident dignissimos nemo, nulla quaerat. Quibusdam non, eos,
-                            voluptatem reprehenderit hic nam! Laboriosam, sapiente! Praesentium.</p>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia magnam laborum eaque.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card">
-                      <div className="card-header" role="tab" id="headingThree">
-                        <h6 className="mb-0">
-                          <a className="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false"
-                             aria-controls="collapseThree">shipping &amp; Returns</a>
-                        </h6>
-                      </div>
-                      <div id="collapseThree" className="collapse" role="tabpanel" aria-labelledby="headingThree"
-                           data-parent="#accordion">
-                        <div className="card-body">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae
-                            suscipit ab soluta delectus voluptate, vero vitae, tempore maxime rerum iste dolorem
-                            mollitia perferendis distinctio. Quibusdam laboriosam rerum distinctio. Repudiandae fugit
-                            odit, sequi id!</p>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae qui maxime consequatur
-                            laudantium temporibus ad et. A optio inventore deleniti ipsa.</p>
+                          <p>{product.description}</p>
                         </div>
                       </div>
                     </div>
@@ -202,7 +176,7 @@ const ProductDetails = () => {
           </div>
         </section>
 
-        <Footer/>
+        <Footer />
       </div>
     </>
   );

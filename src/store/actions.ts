@@ -10,6 +10,13 @@ export function fetchProducts(offset: number) {
   };
 }
 
+export function fetchSingleProduct(id: string) {
+  return async function(dispatch: any) {
+    const products = await getSingleProduct(id);
+    dispatch(setProductsAction(products));
+  };
+}
+
 export function fetchFilteredProducts(category: number, min: number, max: number) {
   return async function(dispatch: any) {
     const filteredProducts = await getFilteredProducts(category, min, max);
@@ -46,6 +53,11 @@ export function fetchCategories() {
 
 const getProducts = async (offset = 0) => {
   const response = await axios.get(`https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=9`);
+  return response.data;
+};
+
+const getSingleProduct = async (id:any) => {
+  const response = await axios.get(`https://api.escuelajs.co/api/v1/products/${id}`);
   return response.data;
 };
 

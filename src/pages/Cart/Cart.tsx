@@ -135,70 +135,72 @@ function Cart() {
                 </div>
               </div>
             </div>
-
-            <div className="row">
-              <div className="col-12 col-md-6 col-lg-4">
-                <div className="coupon-code-area mt-70">
-                  <div className="cart-page-heading">
-                    <h5>Cupon code</h5>
-                    <p>Enter your cupone code</p>
-                  </div>
-                  <form action="#">
-                    <input type="search" name="search" placeholder="" />
-                    <button type="submit">Apply</button>
-                  </form>
-                </div>
-              </div>
-              <div className="col-12 col-md-6 col-lg-4">
-                <div className="shipping-method-area mt-70">
-                  <div className="cart-page-heading">
-                    <h5>Shipping method</h5>
-                    <p>Select the one you want</p>
-                  </div>
-
-                  <div className="custom-control custom-radio mb-30">
-                    <input type="radio" checked={shipping.current === "extra"} onClick={() => changeShipping("extra")}
-                           id="customRadio1" name="customRadio" className="custom-control-input" />
-                    <label className="custom-control-label d-flex align-items-center justify-content-between"
-                           htmlFor="customRadio1"><span>Next day delivery</span><span>$ {shipping.extra}</span></label>
-                  </div>
-
-                  <div className="custom-control custom-radio mb-30">
-                    <input type="radio" checked={shipping.current === "standart"}
-                           onClick={() => changeShipping("standart")} id="customRadio2" name="customRadio"
-                           className="custom-control-input" />
-                    <label className="custom-control-label d-flex align-items-center justify-content-between"
-                           htmlFor="customRadio2"><span>Standard delivery</span><span>$ {shipping.standart}</span></label>
-                  </div>
-
-                  <div className="custom-control custom-radio">
-                    <input type="radio" checked={shipping.current === "personal"}
-                           onClick={() => changeShipping("personal")} id="customRadio3" name="customRadio"
-                           className="custom-control-input" />
-                    <label className="custom-control-label d-flex align-items-center justify-content-between"
-                           htmlFor="customRadio3"><span>Personal Pickup</span><span>Free</span></label>
+            { cart.length > 0 &&
+              <div className="row">
+                <div className="col-12 col-md-6 col-lg-4">
+                  <div className="coupon-code-area mt-70">
+                    <div className="cart-page-heading">
+                      <h5>Cupon code</h5>
+                      <p>Enter your cupone code</p>
+                    </div>
+                    <form action="#">
+                      <input type="search" name="search" placeholder="" />
+                      <button type="submit">Apply</button>
+                    </form>
                   </div>
                 </div>
-              </div>
-              <div className="col-12 col-lg-4">
-                <div className="cart-total-area mt-70">
-                  <div className="cart-page-heading">
-                    <h5>Cart total</h5>
-                    <p>Final info</p>
-                  </div>
+                <div className="col-12 col-md-6 col-lg-4">
+                  <div className="shipping-method-area mt-70">
+                    <div className="cart-page-heading">
+                      <h5>Shipping method</h5>
+                      <p>Select the one you want</p>
+                    </div>
 
-                  <ul className="cart-total-chart">
-                    <li><span>Subtotal</span> <span>$ {parseFloat(price.totalPrice).toFixed(2)}</span></li>
-                    <li><span>Shipping</span>
-                      <span>{shipping[shipping.current] > 0 ? shipping[shipping.current] : "Free"}</span></li>
-                    <li><span><strong>Total</strong></span>
-                      <span><strong>$ {parseFloat(price.totalPrice + shipping[shipping.current]).toFixed(2)}</strong></span>
-                    </li>
-                  </ul>
-                  <Link to={"/checkout"} className="btn karl-checkout-btn">Proceed to checkout</Link>
+                    <div className="custom-control custom-radio mb-30">
+                      <input type="radio" checked={shipping.current === "extra"} onClick={() => changeShipping("extra")}
+                             id="customRadio1" name="customRadio" className="custom-control-input" />
+                      <label className="custom-control-label d-flex align-items-center justify-content-between"
+                             htmlFor="customRadio1"><span>Next day delivery</span><span>$ {shipping.extra}</span></label>
+                    </div>
+
+                    <div className="custom-control custom-radio mb-30">
+                      <input type="radio" checked={shipping.current === "standart"}
+                             onClick={() => changeShipping("standart")} id="customRadio2" name="customRadio"
+                             className="custom-control-input" />
+                      <label className="custom-control-label d-flex align-items-center justify-content-between"
+                             htmlFor="customRadio2"><span>Standard delivery</span><span>$ {shipping.standart}</span></label>
+                    </div>
+
+                    <div className="custom-control custom-radio">
+                      <input type="radio" checked={shipping.current === "personal"}
+                             onClick={() => changeShipping("personal")} id="customRadio3" name="customRadio"
+                             className="custom-control-input" />
+                      <label className="custom-control-label d-flex align-items-center justify-content-between"
+                             htmlFor="customRadio3"><span>Personal Pickup</span><span>Free</span></label>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12 col-lg-4">
+                  <div className="cart-total-area mt-70">
+                    <div className="cart-page-heading">
+                      <h5>Cart total</h5>
+                      <p>Final info</p>
+                    </div>
+
+                    <ul className="cart-total-chart">
+                      <li><span>Subtotal</span> <span>$ {parseFloat(price.totalPrice).toFixed(2)}</span></li>
+                      <li><span>Shipping</span>
+                        <span>{shipping[shipping.current] > 0 ? shipping[shipping.current] : "Free"}</span></li>
+                      <li><span><strong>Total</strong></span>
+                        <span><strong>$ {parseFloat(price.totalPrice + shipping[shipping.current]).toFixed(2)}</strong></span>
+                      </li>
+                    </ul>
+                    <Link to={"/checkout"} className="btn karl-checkout-btn">Proceed to checkout</Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            }
+
           </div>
         </div>
         <Footer />

@@ -10,17 +10,21 @@ import { useMatch, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { addProductAction, updateProductsAction } from "../../store/cartReduser";
 import { Link, useLocation } from "react-router-dom";
+import {fetchSingleProduct} from "../../store/actions";
+
 
 const ProductDetails = () => {
 
   const nav = useAppSelector(state => state.changeNAv);
   const dispatch = useAppDispatch();
-  const products = useAppSelector(state => state.products.products);
+  const product = useAppSelector(state => state.products.products);
   const cart = useAppSelector(state => state.cart);
   const isAuth = useIsAuthorized();
   const navigate = useNavigate();
   const match = useMatch("/details/:id");
-  const product = products.find((item: any) => item.id == match.params.id);
+
+  
+  // const product = products.find((item: any) => item.id == match.params.id);
 
   const notifyAddProduct = () => toast.success("Product added to cart!", {
     position: "top-left",
@@ -36,7 +40,7 @@ const ProductDetails = () => {
   const addToCart = (id: number) => {
     if (isAuth) {
       notifyAddProduct();
-      const product = products.filter((item: any) => item.id === id)[0];
+      // const product = products.filter((item: any) => item.id === id)[0];
       const founded = cart.find((item: any) => item.id === id);
       Boolean(founded) ?
         dispatch(updateProductsAction(cart.map((item: any) => item.id === id ? {
@@ -52,6 +56,11 @@ const ProductDetails = () => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(()=>{
+    dispatch(fetchSingleProduct(match?.params.id!))
+    console.log(product);
+  },[])
 
   const location = useLocation();
   const paths = location.pathname.split("/").filter(path => path !== "");
@@ -95,13 +104,13 @@ const ProductDetails = () => {
 
                     <ol className="carousel-indicators">
                       <li className="active" data-target="#product_details_slider" data-slide-to="0"
-                          style={{ backgroundImage: `url(${product.images[0]})` }}>
+                          style={{ backgroundImage: `url(${product.images})` }}>
                       </li>
                       <li data-target="#product_details_slider" data-slide-to="1"
-                          style={{ backgroundImage: `url(${product.images[1]})` }}>
+                          style={{ backgroundImage: `url(${product.images})` }}>
                       </li>
                       <li data-target="#product_details_slider" data-slide-to="2"
-                          style={{ backgroundImage: `url(${product.images[2]})` }}>
+                          style={{ backgroundImage: `url(${product.images})` }}>
                       </li>
 
                     </ol>
@@ -109,17 +118,17 @@ const ProductDetails = () => {
                     <div className="carousel-inner">
                       <div className="carousel-item active">
                         <a className="gallery_img">
-                          <img className="d-block w-100" src={product.images[0]} alt="First slide" />
+                          <img className="d-block w-100" src={product.images} alt="First slide" />
                         </a>
                       </div>
                       <div className="carousel-item">
                         <a className="gallery_img">
-                          <img className="d-block w-100" src={product.images[1]} alt="First slide" />
+                          <img className="d-block w-100" src={product.images} alt="First slide" />
                         </a>
                       </div>
                       <div className="carousel-item">
                         <a className="gallery_img">
-                          <img className="d-block w-100" src={product.images[2]} alt="First slide" />
+                          <img className="d-block w-100" src={product.images} alt="First slide" />
                         </a>
                       </div>
 

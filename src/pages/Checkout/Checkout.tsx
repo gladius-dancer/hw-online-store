@@ -51,7 +51,7 @@ function Checkout() {
   const [cashError, setCashError] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const [accountError, setAccountError] = useState(false);
-  const [subscribeError, setSubscribeError] = useState(false);
+  // const [subscribeError, setSubscribeError] = useState(false);
   const [paypal, setPaypal] = useState(true);
   const [card, setCard] = useState(false);
 
@@ -117,16 +117,16 @@ function Checkout() {
     if (!terms) {
       setTermsError(true);
     }
-    if (!subscribe) {
-      setSubscribeError(true);
-    }
+    // if (!subscribe) {
+    //   setSubscribeError(true);
+    // }
     if (!account) {
       setAccountError(true);
     }
     if (!cash) {
       setCashError(true);
     }
-    if (terms && account && subscribe && cash) {
+    if (terms && account && cash) {
       alert("Successfully");
     }
   };
@@ -264,7 +264,6 @@ function Checkout() {
                             label="Subscribe to our newsletter"
                             checked={subscribe}
                             onChange={subscribeChange}
-                            error={subscribeError}
                           />
                         </div>
                       </div>
